@@ -1,5 +1,5 @@
 from playwright.sync_api import Page
-
+from components.header import HeaderComponent
 from pages.base_page import BasePage
 
 
@@ -7,9 +7,15 @@ class LoginPage(BasePage):
     def __init__(self, page: Page):
         super().__init__(page)
 
-        self.email_input = self.page.locator("input[data-qa='login-email']")
-        self.password_input = self.page.locator("input[data-qa='login-password']")
-        self.login_button = self.page.locator("button[data-qa='login-button']")
+        self.email_input = self.page.get_by_test_id("login-email")
+        self.password_input = self.page.get_by_test_id('login-password')
+        self.login_button = self.page.get_by_test_id('login-button')
+
+        self.name_user_signup_input = self.page.get_by_test_id('signup-name')
+        self.email_user_signup_input = self.page.get_by_test_id('signup-email')
+        self.signup_user_button = self.page.get_by_test_id('signup-button')
+
+        self.header = HeaderComponent(page)
 
     def open(self):
         self.visit('https://www.automationexercise.com/login')
@@ -23,4 +29,9 @@ class LoginPage(BasePage):
 
     def login(self, email: str, password: str):
         self.fill_login_form(email, password)
-        self.login_button.click()
+        self.click_login_button()
+
+    def start_signup(self, name: str, email: str):
+        self.name_user_signup_input.fill(name)
+        self.email_user_signup_input.fill(email)
+        self.signup_user_button.click()
