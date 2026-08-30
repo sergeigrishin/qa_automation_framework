@@ -5,6 +5,10 @@ from playwright.sync_api import Page
 class RegistrationPage(BasePage):
     def __init__(self, page: Page):
         super().__init__(page)
+        # Registration form
+        self.registration_form_title = page.get_by_text(
+            "Enter Account Information"
+        )
         # Title
         self.mr_title_radiobutton = page.locator("//input[@id='id_gender1']")
         self.mrs_title_radiobutton = page.locator("//input[@id='id_gender2']")
@@ -16,8 +20,8 @@ class RegistrationPage(BasePage):
 
         # Birth
         self.day_date_of_birth = page.get_by_test_id('days')
-        self.month_date_of_birth = page.get_by_test_id('month')
-        self.year_date_of_birth = page.get_by_test_id('year')
+        self.month_date_of_birth = page.get_by_test_id('months')
+        self.year_date_of_birth = page.get_by_test_id('years')
 
         # Checkbox info
         self.newsletter_checkbox = page.locator("//div//input[@id='newsletter']")
@@ -46,6 +50,9 @@ class RegistrationPage(BasePage):
         self.subscription_email_input = page.locator("//div//input[@id='susbscribe_email']")
         self.subscription_email_button = page.locator("//div//input[@id='subscribe']")
 
+    def get_registration_form_title(self):
+        return self.registration_form_title
+
     def select_mr_title(self):
         self.mr_title_radiobutton.check()
 
@@ -58,9 +65,7 @@ class RegistrationPage(BasePage):
     def subscribe_to_partner_offers(self):
         self.offers_from_our_partners_checkbox.check()
 
-    def fill_account_information(self, name: str, email: str, password: str):
-        self.name_input.fill(name)
-        self.email_input.fill(email)
+    def fill_password_information(self, password: str):
         self.password_input.fill(password)
 
     def select_date_of_birth(self, day: int, month: int, year: int):

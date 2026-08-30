@@ -11,7 +11,7 @@ class LoginPage(BasePage):
         self.password_input = self.page.get_by_test_id('login-password')
         self.login_button = self.page.get_by_test_id('login-button')
 
-        self.name_user_signup_input = self.page.get_by_test_id('signup-name')
+        self.name_user_signup_input = self.page.locator("//div//input[@data-qa='signup-name']")
         self.email_user_signup_input = self.page.get_by_test_id('signup-email')
         self.signup_user_button = self.page.get_by_test_id('signup-button')
 
