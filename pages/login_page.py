@@ -14,7 +14,7 @@ class LoginPage(BasePage):
         self.name_user_signup_input = self.page.locator("//div//input[@data-qa='signup-name']")
         self.email_user_signup_input = self.page.get_by_test_id('signup-email')
         self.signup_user_button = self.page.get_by_test_id('signup-button')
-        self.existing_email_error = page.get_by_text(
+        self.signup_existing_email_error = page.get_by_text(
             "Email Address already exist!"
         )
 
