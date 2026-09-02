@@ -14,6 +14,9 @@ class LoginPage(BasePage):
         self.name_user_signup_input = self.page.locator("//div//input[@data-qa='signup-name']")
         self.email_user_signup_input = self.page.get_by_test_id('signup-email')
         self.signup_user_button = self.page.get_by_test_id('signup-button')
+        self.existing_email_error = page.get_by_text(
+            "Email Address already exist!"
+        )
 
         self.header = HeaderComponent(page)
 
@@ -35,3 +38,6 @@ class LoginPage(BasePage):
         self.name_user_signup_input.fill(name)
         self.email_user_signup_input.fill(email)
         self.signup_user_button.click()
+
+    def get_existing_email_error(self):
+        return self.existing_email_error

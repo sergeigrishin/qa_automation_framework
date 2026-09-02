@@ -2,7 +2,6 @@ from playwright.sync_api import Page
 import pytest
 from pages.login_page import LoginPage
 from pages.registration_page import RegistrationPage
-from tests.data.user_factory import UserFactory
 from tests.data.user import User
 
 
@@ -14,7 +13,7 @@ def login_page(page: Page) -> LoginPage:
 
 @pytest.fixture
 def user() -> User:
-    return UserFactory.create_user()
+    return User.create_user()
 
 
 @pytest.fixture
