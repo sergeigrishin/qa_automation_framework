@@ -1,5 +1,5 @@
 from playwright.sync_api import expect
-from tests.data.user import User
+from api.data import User
 import pytest
 
 

@@ -1,7 +1,7 @@
 from playwright.sync_api import expect
 import pytest
 
-from tests.data.user_default import UserDefault
+from api.data import UserDefault
 
 
 @pytest.mark.negative

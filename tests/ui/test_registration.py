@@ -1,8 +1,6 @@
-from tests.data.user import User
+from api.data import User
 from playwright.sync_api import expect
 import pytest
-
-from tests.data.user_default import UserDefault
 
 
 @pytest.mark.positive

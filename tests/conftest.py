@@ -1,4 +1,3 @@
-from ctypes import c_int
 from multiprocessing.connection import Client
 from httpx import Client
 from playwright.sync_api import Page
@@ -9,7 +8,7 @@ from config.settings import Settings
 from api.clients.products_client import ProductsClient
 from pages.login_page import LoginPage
 from pages.registration_page import RegistrationPage
-from tests.data.user import User
+from api.data.user import User
 from api.clients.public_client import PublicAPIClient
 
 
