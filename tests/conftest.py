@@ -1,8 +1,8 @@
-from multiprocessing.connection import Client
 from httpx import Client
 from playwright.sync_api import Page
 import pytest
 
+from http import HTTPStatus
 from api.clients.auth_client import AuthClient
 from config.settings import Settings
 from api.clients.products_client import ProductsClient
@@ -51,3 +51,17 @@ def auth_client(settings: Settings):
     public_client = PublicAPIClient(client)
     yield AuthClient(public_client)
     client.close()
+
+
+@pytest.fixture
+def registered_user(auth_client):
+    user = User()
+
+    response = auth_client.create_account(user)
+    assert response.data["responseCode"] == HTTPStatus.CREATED
+    yield user
+
+    auth_client.delete_account(
+        email=user.email,
+        password=user.password
+    )

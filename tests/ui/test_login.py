@@ -1,8 +1,9 @@
 from playwright.sync_api import expect
-from api.data import User
+from api.data.user import User
 import pytest
 
 
+@pytest.mark.ui
 @pytest.mark.negative
 def test_login(login_page):
     default_user = User()
