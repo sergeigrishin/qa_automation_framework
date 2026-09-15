@@ -3,7 +3,7 @@ from api.models.api_response import APIResponse
 from api.data.user import User
 from api.schemas.users.user_response import UserResponse
 from api.schemas.users.user_detail_response import UserDetailResponse
-
+from api.schemas.users.user_request import UserRequest
 
 class UserClient:
     """
@@ -13,26 +13,31 @@ class UserClient:
     def __init__(self, client: APIClient):
         self.client = client
 
+    def _build_user_data(self, user: User) -> dict:
+        request = UserRequest(
+            name=user.name,
+            email=user.email,
+            password=user.password,
+            title=user.title,
+            birth_date="10",
+            birth_month="5",
+            birth_year="1995",
+            firstname=user.first_name,
+            lastname=user.last_name,
+            company="Test Company",
+            address1=user.address,
+            address2="",
+            country="United States",
+            zipcode=user.zipcode,
+            state=user.state,
+            city=user.city,
+            mobile_number=user.mobile_number,
+        )
+
+        return request.model_dump()
+
     def create_account(self, user: User) -> APIResponse[UserResponse]:
-        response = self.client.post("/createAccount", data={
-            "name": user.name,
-            "email": user.email,
-            "password": user.password,
-            "title": user.title,
-            "birth_date": "10",
-            "birth_month": "5",
-            "birth_year": "1995",
-            "firstname": user.first_name,
-            "lastname": user.last_name,
-            "company": "Test Company",
-            "address1": user.address,
-            "address2": "",
-            "country": "United States",
-            "zipcode": user.zipcode,
-            "state": user.state,
-            "city": user.city,
-            "mobile_number": user.mobile_number
-        }
+        response = self.client.post("/createAccount", data=self._build_user_data(user)
                                     )
         return self.client.parse_response(response, UserResponse)
 

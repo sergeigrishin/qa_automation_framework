@@ -27,5 +27,5 @@ def test_search_product_without_query(products_client: ProductsClient):
     response = products_client.search_product_without_query()
 
     assert response.status_code == 200
-    assert response.data["responseCode"] == 400
+    assert response.data.response_code == 400
 

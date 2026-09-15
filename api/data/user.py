@@ -6,7 +6,7 @@ fake = Faker()
 
 class User(BaseModel):
     name: str = Field(default_factory=fake.name)
-    email: EmailStr = Field(default_factory=fake.email)
+    email: EmailStr = Field(default_factory=lambda: f"{fake.uuid4()}@test.com")
     password: str = Field(default_factory=lambda: fake.password(length=10))
     title: str = 'Mr'
     first_name: str = Field(default_factory=fake.first_name)

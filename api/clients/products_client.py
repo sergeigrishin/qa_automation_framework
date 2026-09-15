@@ -1,7 +1,7 @@
 from api.clients.api_client import APIClient
 from api.models.api_response import APIResponse
 
-from api.schemas.products.products_response import ProductsResponse
+from api.schemas.products.products_response import ProductsResponse, ProductActionResponse
 
 
 class ProductsClient:
@@ -20,8 +20,8 @@ class ProductsClient:
         response = self.client.post("/searchProduct", data={"search_product": search_product})
         return self.client.parse_response(response, ProductsResponse)
 
-    def search_product_without_query(self) -> APIResponse[dict]:
+    def search_product_without_query(self) -> APIResponse[ProductActionResponse]:
         response = self.client.post("/searchProduct")
-        return APIResponse(status_code=response.status_code, data=response.json())
+        return self.client.parse_response(response, ProductActionResponse)
 
     
