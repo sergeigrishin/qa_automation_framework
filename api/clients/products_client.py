@@ -1,15 +1,15 @@
-from api.clients.public_client import PublicAPIClient
+from api.clients.api_client import APIClient
 from api.models.api_response import APIResponse
 
-from api.schemas.products_response import ProductsResponse
+from api.schemas.products.products_response import ProductsResponse
 
 
 class ProductsClient:
     """
-    Клиент для работы с productsList
+    Клиент для работы с products
     """
 
-    def __init__(self, client: PublicAPIClient):
+    def __init__(self, client: APIClient):
         self.client = client
 
     def get_all_products(self) -> APIResponse[ProductsResponse]:

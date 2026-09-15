@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
-from api.schemas.product_schema import Product
+from api.schemas.products.product_schema import Product
 
 
 class ProductsResponse(BaseModel):

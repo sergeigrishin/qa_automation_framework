@@ -16,8 +16,9 @@ def test_get_all_products(products_client: ProductsClient):
 def test_search_product(products_client: ProductsClient):
     response = products_client.search_product("top")
 
-    assert response.status_code == 200
+    assert response.data.response_code == 200
     assert len(response.data.products) > 0
+
 
 
 @pytest.mark.negative

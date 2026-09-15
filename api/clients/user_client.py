@@ -1,14 +1,19 @@
-from api.clients.public_client import PublicAPIClient
+from api.clients.api_client import APIClient
 from api.models.api_response import APIResponse
 from api.data.user import User
+from api.schemas.users.user_response import UserResponse
+from api.schemas.users.user_detail_response import UserDetailResponse
 
 
+class UserClient:
+    """
+    Клиент для работы с user
+    """
 
-class AuthClient:
-    def __init__(self, client: PublicAPIClient):
+    def __init__(self, client: APIClient):
         self.client = client
 
-    def create_account(self, user: User) -> APIResponse[dict]:
+    def create_account(self, user: User) -> APIResponse[UserResponse]:
         response = self.client.post("/createAccount", data={
             "name": user.name,
             "email": user.email,
@@ -29,13 +34,9 @@ class AuthClient:
             "mobile_number": user.mobile_number
         }
                                     )
+        return self.client.parse_response(response, UserResponse)
 
-        return APIResponse(
-            status_code=response.status_code,
-            data=response.json()
-        )
-
-    def update_account(self, user: User) -> APIResponse[dict]:
+    def update_account(self, user: User) -> APIResponse[UserResponse]:
         response = self.client.put("/updateAccount", data={
             "name": user.name,
             "email": user.email,
@@ -54,31 +55,25 @@ class AuthClient:
             "state": user.state,
             "city": user.city,
             "mobile_number": user.mobile_number
-        }
-                                   )
-        return APIResponse(status_code=response.status_code,
-                           data=response.json()
-                           )
+        })
+        return self.client.parse_response(response, UserResponse)
 
-    def verify_login(self, email: str, password: str) -> APIResponse[dict]:
+    def verify_login(self, email: str, password: str) -> APIResponse[UserResponse]:
         response = self.client.post("/verifyLogin", data={"email": email, "password": password})
-        return APIResponse(
-            status_code=response.status_code,
-            data=response.json()
-        )
+        return self.client.parse_response(response, UserResponse)
 
-    def get_user_by_email(self, email: str) -> APIResponse[dict]:
+    def get_user_by_email(self, email: str) -> APIResponse[UserDetailResponse | UserResponse]:
         response = self.client.get(
             "/getUserDetailByEmail",
             params={"email": email}
         )
+        data = response.json()
+        if "user" in data:
+            return self.client.parse_response(response, UserDetailResponse)
 
-        return APIResponse(
-            status_code=response.status_code,
-            data=response.json()
-        )
+        return self.client.parse_response(response, UserResponse)
 
-    def delete_account(self, email: str, password: str) -> APIResponse[dict]:
+    def delete_account(self, email: str, password: str) -> APIResponse[UserResponse]:
         response = self.client.delete('/deleteAccount', data={"email": email, "password": password})
 
-        return APIResponse(status_code=response.status_code, data=response.json())
+        return self.client.parse_response(response, UserResponse)

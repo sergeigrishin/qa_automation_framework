@@ -5,7 +5,7 @@ import pytest
 
 @pytest.mark.ui
 @pytest.mark.negative
-def test_login(login_page):
+def test_login_invalid_user(login_page):
     default_user = User()
 
     login_page.open()

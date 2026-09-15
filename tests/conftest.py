@@ -1,15 +1,16 @@
 from httpx import Client
 from playwright.sync_api import Page
-import pytest
-
 from http import HTTPStatus
-from api.clients.auth_client import AuthClient
+from api.clients.user_client import UserClient
 from config.settings import Settings
 from api.clients.products_client import ProductsClient
 from pages.login_page import LoginPage
 from pages.registration_page import RegistrationPage
 from api.data.user import User
-from api.clients.public_client import PublicAPIClient
+from api.clients.api_client import APIClient
+import pytest
+
+
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -40,28 +41,32 @@ def settings() -> Settings:
 @pytest.fixture
 def products_client(settings: Settings) -> ProductsClient:
     client = Client(base_url=settings.API_BASE_URL)
-    public_client = PublicAPIClient(client)
+    public_client = APIClient(client)
     yield ProductsClient(public_client)
     client.close()
 
 
 @pytest.fixture
-def auth_client(settings: Settings):
+def user_client(settings: Settings):
     client = Client(base_url=settings.API_BASE_URL)
-    public_client = PublicAPIClient(client)
-    yield AuthClient(public_client)
+    public_client = APIClient(client)
+    yield UserClient(public_client)
     client.close()
 
 
 @pytest.fixture
-def registered_user(auth_client):
+def registered_user(user_client):
     user = User()
 
-    response = auth_client.create_account(user)
-    assert response.data["responseCode"] == HTTPStatus.CREATED
+    response = user_client.create_account(user)
+    assert response.data.response_code == HTTPStatus.CREATED
+
+    original_email = user.email
+    original_password = user.password
+
     yield user
 
-    auth_client.delete_account(
-        email=user.email,
-        password=user.password
+    user_client.delete_account(
+        email=original_email,
+        password=original_password
     )
