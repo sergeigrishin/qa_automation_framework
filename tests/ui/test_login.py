@@ -11,5 +11,5 @@ def test_login_invalid_user(login_page):
     login_page.open()
     login_page.login(email=default_user.email, password=default_user.password)
 
-    user_locator = login_page.header.get_logged_in_user_locator(default_user.name)
-    expect(user_locator).to_be_visible()
+    expect(login_page.login_error).to_be_visible()
+    expect(login_page.login_error).to_have_text('Your email or password is incorrect!')

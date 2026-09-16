@@ -1,6 +1,8 @@
 from api.data.user import User
 from playwright.sync_api import expect
 import pytest
+import re
+
 
 @pytest.mark.ui
 @pytest.mark.positive
@@ -42,5 +44,5 @@ def test_registration(login_page, registration_page):
     registration_page.fill_contact_information('457392')
     registration_page.click_button_create_account()
 
-    expect(registration_page.page).to_have_url('https://automationexercise.com/account_created')
+    expect(registration_page.page).to_have_url(re.compile(r"/account_created"))
 

@@ -17,7 +17,7 @@ class LoginPage(BasePage):
         self.signup_existing_email_error = page.get_by_text(
             "Email Address already exist!"
         )
-
+        self.login_error = self.page.locator("//div[@class='login-form']//p[text()='Your email or password is incorrect!']")
         self.header = HeaderComponent(page)
 
     def open(self):
@@ -41,3 +41,4 @@ class LoginPage(BasePage):
 
     def get_existing_email_error(self):
         return self.existing_email_error
+
