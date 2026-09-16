@@ -4,6 +4,8 @@ from api.data.user import User
 from api.schemas.users.user_response import UserResponse
 from api.schemas.users.user_detail_response import UserDetailResponse
 from api.schemas.users.user_request import UserRequest
+import allure
+
 
 class UserClient:
     """
@@ -36,11 +38,15 @@ class UserClient:
 
         return request.model_dump()
 
+
+    @allure.step("Создать аккаунт пользователя")
     def create_account(self, user: User) -> APIResponse[UserResponse]:
         response = self.client.post("/createAccount", data=self._build_user_data(user)
                                     )
         return self.client.parse_response(response, UserResponse)
 
+
+    @allure.step("Обновить аккаунт пользователя")
     def update_account(self, user: User) -> APIResponse[UserResponse]:
         response = self.client.put("/updateAccount", data={
             "name": user.name,
@@ -63,10 +69,14 @@ class UserClient:
         })
         return self.client.parse_response(response, UserResponse)
 
+
+    @allure.step("Проверить логин пользователя")
     def verify_login(self, email: str, password: str) -> APIResponse[UserResponse]:
         response = self.client.post("/verifyLogin", data={"email": email, "password": password})
         return self.client.parse_response(response, UserResponse)
 
+
+    @allure.step("Поиск пользователя по email")
     def get_user_by_email(self, email: str) -> APIResponse[UserDetailResponse | UserResponse]:
         response = self.client.get(
             "/getUserDetailByEmail",
@@ -78,6 +88,8 @@ class UserClient:
 
         return self.client.parse_response(response, UserResponse)
 
+
+    @allure.step("Удалить аккаунт пользователя")
     def delete_account(self, email: str, password: str) -> APIResponse[UserResponse]:
         response = self.client.delete('/deleteAccount', data={"email": email, "password": password})
 

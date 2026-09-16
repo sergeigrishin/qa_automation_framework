@@ -11,8 +11,6 @@ from api.clients.api_client import APIClient
 import pytest
 
 
-
-
 @pytest.fixture(scope="session", autouse=True)
 def configure_playwright_selectors(playwright):
     playwright.selectors.set_test_id_attribute("data-qa")
@@ -66,7 +64,8 @@ def registered_user(user_client):
 
     yield user
 
-    user_client.delete_account(
+    delete_response = user_client.delete_account(
         email=original_email,
         password=original_password
     )
+    assert delete_response.data.response_code == HTTPStatus.OK
