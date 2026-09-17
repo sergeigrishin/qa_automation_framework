@@ -3,6 +3,7 @@ from api.data.user import User
 import pytest
 
 
+@pytest.mark.smoke
 @pytest.mark.ui
 @pytest.mark.negative
 def test_login_invalid_user(login_page):

@@ -16,3 +16,9 @@ class User(BaseModel):
     city: str = Field(default_factory=fake.city)
     zipcode: str = Field(default_factory=fake.zipcode)
     mobile_number: str = Field(default_factory=fake.phone_number)
+    birth_date: str = "10"
+    birth_month: str = "5"
+    birth_year: str = "1995"
+    company: str = "Test Company"
+    country: str = "United States"
+    address2: str = ""

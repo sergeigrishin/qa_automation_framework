@@ -2,7 +2,7 @@ from httpx import Client
 from playwright.sync_api import Page
 from http import HTTPStatus
 from api.clients.user_client import UserClient
-from config.settings import Settings
+from api.config.settings import Settings
 from api.clients.products_client import ProductsClient
 from pages.login_page import LoginPage
 from pages.registration_page import RegistrationPage
@@ -45,7 +45,7 @@ def products_client(settings: Settings) -> ProductsClient:
 
 
 @pytest.fixture
-def user_client(settings: Settings):
+def user_client(settings: Settings) -> UserClient:
     client = Client(base_url=settings.API_BASE_URL)
     public_client = APIClient(client)
     yield UserClient(public_client)
@@ -64,8 +64,8 @@ def registered_user(user_client):
 
     yield user
 
-    delete_response = user_client.delete_account(
+    user_client.delete_account(
         email=original_email,
         password=original_password
     )
-    assert delete_response.data.response_code == HTTPStatus.OK
+

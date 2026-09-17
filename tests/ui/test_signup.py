@@ -3,6 +3,7 @@ import pytest
 
 from api.data.user_default import UserDefault
 
+
 @pytest.mark.ui
 @pytest.mark.negative
 def test_signup_with_existing_email(login_page):

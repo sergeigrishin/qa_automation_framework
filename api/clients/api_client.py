@@ -12,20 +12,32 @@ class APIClient:
     def __init__(self, client: Client):
         self.client = client
 
-    def get(self, url: str, params: dict | None = None) -> Response:
+    def get(self, url: str,
+            params: dict | None = None
+            ) -> Response:
         return self.client.get(url, params=params)
 
-    def post(self, url: str, data: dict | None = None) -> Response:
+    def post(
+            self,
+            url: str,
+            data: dict | None = None,
+            json: dict | None = None
+            ) -> Response:
         return self.client.post(url=url, data=data)
 
-    def delete(self, url: str, data: dict | None = None) -> Response:
-        return self.client.request("DELETE", url=url, data=data)
-
-    def put(self, url: str, data: dict | None = None):
+    def put(self,
+            url: str,
+            data: dict | None = None,
+            json: dict | None = None
+            ) -> Response:
         return self.client.put(url=url, data=data)
 
-    def close(self):
-        self.client.close()
+    def delete(self,
+               url: str,
+               data: dict | None = None,
+               json: dict | None = None
+               ) -> Response:
+        return self.client.request("DELETE", url=url, data=data)
 
     def parse_response(self, response: Response, model: type[T]) -> APIResponse[T]:
         data = response.json()

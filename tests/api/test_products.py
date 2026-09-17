@@ -5,6 +5,8 @@ import allure
 from api.clients.products_client import ProductsClient
 
 
+@pytest.mark.regression
+@pytest.mark.smoke
 @pytest.mark.positive
 @pytest.mark.api
 @allure.title("Получение списка всех продуктов")
@@ -12,6 +14,7 @@ from api.clients.products_client import ProductsClient
 def test_get_all_products(products_client: ProductsClient):
     response = products_client.get_all_products()
 
+    assert response.status_code == HTTPStatus.OK
     assert response.data.response_code == HTTPStatus.OK
     assert response.data
 
@@ -23,6 +26,7 @@ def test_get_all_products(products_client: ProductsClient):
     assert all(product.category.usertype.usertype for product in response.data.products)
 
 
+@pytest.mark.regression
 @pytest.mark.flaky(reruns=1)
 @pytest.mark.positive
 @pytest.mark.api
@@ -45,6 +49,7 @@ def test_search_product(products_client: ProductsClient):
     assert product.brand
 
 
+@pytest.mark.regression
 @pytest.mark.negative
 @pytest.mark.api
 def test_search_product_without_query(products_client: ProductsClient):

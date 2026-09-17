@@ -6,6 +6,7 @@ from api.data.user import User
 from api.data.user_default import UserDefault
 
 
+@pytest.mark.smoke
 @pytest.mark.positive
 @pytest.mark.api
 @pytest.mark.flaky(reruns=1)
@@ -18,7 +19,19 @@ def test_auth_login_with_valid_credentials(user_client):
 
 @pytest.mark.negative
 @pytest.mark.api
-@pytest.mark.parametrize("email, password", [('email.ru', ''), ('test@mal.ru', "Qwerrr")])
+@pytest.mark.parametrize(
+        "email, password",
+         [
+         ('email.ru', ''),
+         ('test@mal.ru', "Qwerrr"),
+         ("ivan_user@mail.com", "wrong_password")
+         ],
+        ids=[
+        "invalid_email_empty_password",
+        "invalid_email_invalid_password",
+        "valid_email_invalid_password",
+         ]
+)
 def test_auth_login_with_invalid_credentials(user_client, email, password):
     response = user_client.verify_login(email=email, password=password)
 
@@ -72,17 +85,18 @@ def test_get_user_by_invalid_email(user_client):
     assert response.data.response_code == HTTPStatus.NOT_FOUND
 
 
+@pytest.mark.parametrize('new_name', ['Mark', 'LI'])
 @pytest.mark.positive
 @pytest.mark.api
-def test_update_user(registered_user, user_client):
-    registered_user.name = "Mark"
+def test_update_user(registered_user, user_client, new_name):
+    registered_user.name = new_name
 
     response = user_client.update_account(registered_user)
     assert response.data.response_code == HTTPStatus.OK
 
     update_user = user_client.get_user_by_email(registered_user.email)
 
-    assert update_user.data.user.name == "Mark"
+    assert update_user.data.user.name == new_name
 
 
 @pytest.mark.negative
