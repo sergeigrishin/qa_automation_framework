@@ -40,6 +40,11 @@ class APIClient:
         return self.client.request("DELETE", url=url, data=data)
 
     def parse_response(self, response: Response, model: type[T]) -> APIResponse[T]:
+        print("STATUS:", response.status_code)
+        print("URL:", response.url)
+        print("BODY:", response.text[:500])
+
+
         data = response.json()
         parsed_data = model.model_validate(data)
 
