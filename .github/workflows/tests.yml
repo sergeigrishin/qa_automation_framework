@@ -10,6 +10,9 @@ jobs:
   tests:
     runs-on: ubuntu-latest
 
+    env:
+      API_BASE_URL: https://automationexercise.com/api
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
